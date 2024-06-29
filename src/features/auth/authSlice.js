@@ -34,10 +34,17 @@ export const authSlice = createAppSlice({
       },
     ),
     checkUserAsync: create.asyncThunk(
-      async (loginInfo) => {
-        const response = await checkUser(loginInfo)
-        // The value we return becomes the `fulfilled` action payload
-        return response.data
+      async (loginInfo, {rejectWithValue}) => {
+        try{
+          const response = await checkUser(loginInfo)
+          return response.data;
+        }
+        catch(error)
+        {
+          console.log(error);
+          return rejectWithValue(error);
+        }
+        
       },
       {
         pending: state => {
@@ -49,7 +56,7 @@ export const authSlice = createAppSlice({
         },
         rejected: (state, action) => {
           state.status = "idle"
-          state.error = action.error
+          state.error = action.payload
         }
       },
     ),

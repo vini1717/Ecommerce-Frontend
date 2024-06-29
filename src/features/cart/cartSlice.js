@@ -60,8 +60,8 @@ export const addToCartSlice = createAppSlice({
       },
     ),
     updateCartItemsAsync: create.asyncThunk(
-      async updateId => {
-        const response = await updateCart(updateId)
+      async (update) => {
+        const response = await updateCart(update)
         // The value we return becomes the `fulfilled` action payload
         return response.data
       },

@@ -42,10 +42,12 @@ export default function ProductDetails() {
 
   const handlecart= (e,product) =>{
     e.preventDefault();
-    if(items.findIndex(item => item.productId === product.id) < 0)
+    console.log("Product Details: ",product);
+    if(items.findIndex(item => item.product.id === product.id) < 0)
     {
-      const newItem = {...product,productId: product.id, quantity:1, user: user.id};
-      delete(newItem["id"]);
+      console.log("Enetered")
+      const newItem = {product: product.id, quantity:1, user: user.id};
+      console.log("NewItems :" ,newItem);
       dispatch(addtoCartAsync(newItem))
     }
     else{

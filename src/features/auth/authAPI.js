@@ -2,7 +2,7 @@
 export const createUser = (userData) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async resolve => {
-    const response = await fetch("http://localhost:8080/users", {
+    const response = await fetch("http://localhost:8080/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {'content-type': 'application/json'}
@@ -16,18 +16,27 @@ export const createUser = (userData) => {
 export const checkUser = (loginInfo) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve,reject) => {
-    const email = loginInfo.email;
-    const password = loginInfo.password;
-    const response = await fetch("http://localhost:8080/users?email="+email)
-    const data = await response.json()
-    console.log({data});
-    if(data.length && data[0].password === password)
+    try{
+      const response = await fetch("http://localhost:8080/auth/login",{
+      method: "POST",
+      body: JSON.stringify(loginInfo),
+      headers: {'content-type': 'application/json'}
+    })
+    if(response.ok)
     {
-
-      resolve({ data: data[0] })
+      const data = await response.json()
+    console.log({data});
+    // resolve({ data: data[0] })
+    resolve({data})
     }
     else{
-      reject({message: "Wrong Username/Password"})
+      const error = await response.json();
+      reject(error)
+    }
+    
+    }
+    catch(error){
+      reject(error)
     }
    
   })
