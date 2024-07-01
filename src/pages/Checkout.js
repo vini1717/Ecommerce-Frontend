@@ -49,17 +49,17 @@ function Checkout() {
   }
 
   const handleAddress = (e)=>{
-    console.log(user.addresses[e.target.value])
+    // console.log(user.addresses[e.target.value])
     setSelectedAddress(user.addresses[e.target.value])
   }
 
   const handlePaymentMethod = (e) =>{
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setPaymentMethod(e.target.value)
   }
 
   const handleOrder = () =>{
-    const order = {user,items, totalAmount, totalItems,paymentMethod,selectedAddress,status:"pending"}
+    const order = {user: user.id,items, totalAmount, totalItems,paymentMethod,selectedAddress,status:"pending"}
     dispatch(addOrderAsync(order))
   }
 
