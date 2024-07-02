@@ -100,7 +100,7 @@ export const AdminProductList = () => {
 
   useEffect(() => {
     const pagination = {_page:page, _per_page: ITEMS_PER_PAGE}
-    dispatch(fetchProductsByFilterAsync({filter,sort,pagination}));
+    dispatch(fetchProductsByFilterAsync({filter,sort,pagination,admin:true}));
   }, [dispatch,filter,sort,page]);
 
   useEffect(()=>{
@@ -459,6 +459,11 @@ const ProductGrid = ({products}) => {
                                 {product.deleted && <div>
                                   <p className="text-sm text-red-500">Product Deleted</p>
                                 </div>}
+                                {product.stock <= 0 && 
+                                <div>
+                                  <p className="text-red-500 text-sm"> Out of Stock</p>
+                                  </div>
+                                }
                               </div>
                             </Link>
                             <div className="my-5">

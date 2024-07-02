@@ -18,7 +18,7 @@ export const fetchProductById = (id) => {
 }
 
 
-export const fetchProductsByFilter = ({filter,sort,pagination}) => {
+export const fetchProductsByFilter = ({filter,sort,pagination,admin}) => {
   //filter={category: [smartphone, laptop]}
 let queryString = '';
 for (let key in filter)
@@ -39,7 +39,12 @@ for(let key in pagination)
 {
   queryString+= `${key}=${pagination[key]}&`;
 }
-console.log(queryString)
+
+if(admin)
+{
+  queryString += `admin=true`;
+}
+// console.log(queryString)
 // eslint-disable-next-line no-async-promise-executor
   return new Promise(async resolve => {
     const response = await fetch("http://localhost:8080/products?"+queryString);

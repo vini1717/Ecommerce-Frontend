@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { fetchAllOrdersAsync, selectOrder, selectTotalOrders, updateOrderAsync } from "../../order/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
-import { XMarkIcon, EyeIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, EyeIcon, PencilIcon, ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
 import { Pagination } from "../../common/Pagination";
+
 
 export const AdminOrders = () => {
 
@@ -28,7 +29,7 @@ export const AdminOrders = () => {
   }
 
   const handleSort = (sortOptions) => {
-    const sort = { _sort: sortOptions._sort };
+    const sort = { _sort: sortOptions.sort, _order: sortOptions.order };
     setSort(sort);
   };
 
@@ -67,9 +68,21 @@ export const AdminOrders = () => {
           <table className="min-w-max w-full table-auto">
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left  cursor-pointer" onClick={e=> handleSort({_sort: "id"})}>Order Number</th>
+                <th className="py-3 px-4 text-left  cursor-pointer" onClick={e=> handleSort({sort: "id", order: sort._order === "asc"? "desc": "asc"})}>
+                  Order Number
+                  {sort._sort === "id" && 
+                  (sort._order === "asc" ? (
+                    <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
+                  ): (<ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>))}
+                  </th>
                 <th className="py-3 px-6 text-left">Items</th>
-                <th className="py-3 px-6 text-center">Total Amount</th>
+                <th  className="py-3 px-0 text-left  cursor-pointer" onClick={e=> handleSort({sort: "totalAmount", order: sort._order === "asc"? "desc": "asc"})}>
+                  Total Amount
+                  {sort._sort === "totalAmount" && 
+                  (sort._order === "asc" ? (
+                    <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
+                  ): (<ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>))}
+                  </th>
                 <th className="py-3 px-6 text-center">Shipping Address</th>
                 <th className="py-3 px-6 text-center">Status</th>
                 <th className="py-3 px-6 text-center">Actions</th>
@@ -89,10 +102,10 @@ export const AdminOrders = () => {
                     <div className="mr-2">
                       <img
                         className="w-6 h-6 rounded-full"
-                        src={item.thumbnail}
+                        src={item.product.thumbnail}
                       />
                     </div>
-                    <span>{item.title} - #{item.quantity} - ${discountedPrice(item)}</span>
+                    <span>{item.product.title} - #{item.quantity} - ${discountedPrice(item.product)}</span>
                   </div>)}
                 </td>
                 <td className="py-3 px-6 text-center">
